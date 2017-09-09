@@ -6,15 +6,12 @@ using UnityEngine;
 /// The class responsible for starting a client or a server and updating them
 /// </summary>
 public class NetworkTransmitter_Starter : MonoBehaviour {
-    Server server;
     Client client;
+    private GUIHandler guiHandler;
 
-    /// <summary>
-    /// Starts as the role of a server
-    /// </summary>
-    public void StartServer()
+    private void Start()
     {
-        server = new Server();
+        guiHandler = new GUIHandler();
     }
 
     /// <summary>
@@ -32,7 +29,5 @@ public class NetworkTransmitter_Starter : MonoBehaviour {
     {
         if (client != null)
             client.Update();
-        if (server != null)
-            server.Update();
     }
 }

@@ -7,8 +7,5 @@ using UnityEngine.UI;
 /// </summary>
 public class GUIConfig
 {
-    public static string GetIp()
-    {
-        return GameObject.Find("InputField_Ip").GetComponent<InputField>().text;
-    }
+
 }

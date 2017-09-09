@@ -16,7 +16,7 @@ public class ClientConnection
 
     public ClientConnection()
     {
-        string host = GUIConfig.GetIp();
+        string host = AppConfig.Ip;
         int port = AppConfig.Port;
 
         ConnectToServer(host, port);
@@ -39,7 +39,6 @@ public class ClientConnection
             reader = new StreamReader(stream);
 
             socketReady = true;
-            Debug.Log("Connected to server");
         }
         catch (Exception e) { Debug.Log(e.Message); }
         return socketReady;

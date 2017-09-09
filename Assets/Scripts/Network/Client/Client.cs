@@ -10,6 +10,7 @@ using UnityEngine;
 public class Client
 {
     private Shared_PlayerInfo myPlayerInfo;
+
     ClientConnection connection;
     Client_MessageSender sender;
     Client_MessageHandler messageHandler;
@@ -20,7 +21,7 @@ public class Client
         this.myPlayerInfo = myPlayerInfo;
         connection = new ClientConnection();
         sender = new Client_MessageSender(connection);
-        messageHandler = new Client_MessageHandler();
+        messageHandler = new Client_MessageHandler(this);
         reciever = new Client_MessageReciever(connection, messageHandler);
 
         sender.RegisterAtServer(myPlayerInfo);
@@ -32,5 +33,10 @@ public class Client
     public void Update()
     {
         reciever.CheckForServerResponseMessages();
+    }
+
+    internal void KillConnection()
+    {
+        connection.GetSocket().Close();
     }
 }

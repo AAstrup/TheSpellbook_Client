@@ -37,7 +37,7 @@ public class Client_MessageSender
     /// <param name="playerInfo"></param>
     public void RegisterAtServer(Shared_PlayerInfo playerInfo)
     {
-        var msg = new Message_Request_JoinGame(playerInfo);
+        var msg = new Message_Request_JoinQueue(playerInfo);
         Send(msg);
     }
 }
