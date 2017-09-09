@@ -14,10 +14,10 @@ public class ClientConnection
     private StreamReader reader;
     private bool socketReady;
 
-    public ClientConnection()
+    public ClientConnection(ConnectionInfo connectionInfo)
     {
-        string host = AppConfig.Ip;
-        int port = AppConfig.Port;
+        string host = connectionInfo.Ip;
+        int port = connectionInfo.Port;
 
         ConnectToServer(host, port);
     }

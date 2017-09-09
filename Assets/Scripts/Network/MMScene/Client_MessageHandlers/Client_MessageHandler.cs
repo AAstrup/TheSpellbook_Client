@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 /// Responsible for handling responses from the sever as objects and
 /// finding a suitable handler for the object
 /// </summary>
-public class Client_MessageHandler
+public class Client_MessageHandler : IMessageHandler
 {
     private Client_MessageHandler_GameInfo handler_GameInfo;
     private Client_MessageHandler_InQueue handler_InQueue;

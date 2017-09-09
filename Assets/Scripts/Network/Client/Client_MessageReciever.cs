@@ -10,9 +10,9 @@ using UnityEngine;
 public class Client_MessageReciever
 {
     private ClientConnection connection;
-    private Client_MessageHandler messageHandler;
+    private IMessageHandler messageHandler;
 
-    public Client_MessageReciever(ClientConnection connection, Client_MessageHandler messageHandler)
+    public Client_MessageReciever(ClientConnection connection, IMessageHandler messageHandler)
     {
         this.messageHandler = messageHandler;
         this.connection = connection;

@@ -9,22 +9,19 @@ using UnityEngine;
 /// </summary>
 public class Client
 {
-    private Shared_PlayerInfo myPlayerInfo;
-
     ClientConnection connection;
     Client_MessageSender sender;
     Client_MessageHandler messageHandler;
     Client_MessageReciever reciever;
 
-    public Client(Shared_PlayerInfo myPlayerInfo)
+    public Client(ConnectionInfo connectionInfo)
     {
-        this.myPlayerInfo = myPlayerInfo;
-        connection = new ClientConnection();
+        connection = new ClientConnection(connectionInfo);
         sender = new Client_MessageSender(connection);
         messageHandler = new Client_MessageHandler(this);
         reciever = new Client_MessageReciever(connection, messageHandler);
 
-        sender.RegisterAtServer(myPlayerInfo);
+        sender.RegisterAtServer(AppConfig.GetPersistentData().PlayerInfo);
     }
 
     /// <summary>

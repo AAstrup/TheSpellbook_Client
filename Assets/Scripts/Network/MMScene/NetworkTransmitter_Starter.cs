@@ -19,7 +19,8 @@ public class NetworkTransmitter_Starter : MonoBehaviour {
     /// </summary>
     public void StartClient()
     {
-        client = new Client(new Shared_PlayerInfo() { name = "Client" });
+        AppConfig.GetPersistentData().PlayerInfo = new Shared_PlayerInfo() { name = AppConfig.GetName() };
+        client = new Client( ConnectionInfo.MatchMakerConnectionInfo());
     }
 
     /// <summary>
