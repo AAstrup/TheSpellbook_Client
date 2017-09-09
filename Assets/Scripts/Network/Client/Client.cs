@@ -11,14 +11,14 @@ public class Client
 {
     ClientConnection connection;
     Client_MessageSender sender;
-    Client_MessageHandler messageHandler;
+    IMessageHandler messageHandler;
     Client_MessageReciever reciever;
 
-    public Client(ConnectionInfo connectionInfo)
+    public Client(ConnectionInfo connectionInfo, IMessageHandler messageHandler)
     {
         connection = new ClientConnection(connectionInfo);
         sender = new Client_MessageSender(connection);
-        messageHandler = new Client_MessageHandler(this);
+        this.messageHandler = messageHandler;
         reciever = new Client_MessageReciever(connection, messageHandler);
 
         sender.RegisterAtServer(AppConfig.GetPersistentData().PlayerInfo);

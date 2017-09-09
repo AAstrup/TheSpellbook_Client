@@ -1,13 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-internal class GUIHandler
+internal class MM_GUIHandler
 {
-    public static GUIHandler Instance;
+    public static MM_GUIHandler Instance;
     private GameObject MM;
     private GameObject InQueue;
 
-    public GUIHandler()
+    public MM_GUIHandler()
     {
         Instance = this;
         MM = GameObject.Find("GUI_MainMenu");

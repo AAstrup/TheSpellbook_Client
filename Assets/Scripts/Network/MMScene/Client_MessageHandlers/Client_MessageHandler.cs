@@ -11,10 +11,14 @@ public class Client_MessageHandler : IMessageHandler
     private Client_MessageHandler_InQueue handler_InQueue;
     private Client_MessageHandler_MatchFound handler_MatchFound;
 
-    public Client_MessageHandler(Client client)
+    public Client_MessageHandler()
     {
         handler_GameInfo = new Client_MessageHandler_GameInfo();
         handler_InQueue = new Client_MessageHandler_InQueue();
+    }
+
+    public void Init(Client client)
+    {
         handler_MatchFound = new Client_MessageHandler_MatchFound(client);
     }
 

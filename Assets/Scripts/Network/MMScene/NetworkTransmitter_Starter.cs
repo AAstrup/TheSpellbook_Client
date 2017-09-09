@@ -7,11 +7,11 @@ using UnityEngine;
 /// </summary>
 public class NetworkTransmitter_Starter : MonoBehaviour {
     Client client;
-    private GUIHandler guiHandler;
+    private MM_GUIHandler guiHandler;
 
     private void Start()
     {
-        guiHandler = new GUIHandler();
+        guiHandler = new MM_GUIHandler();
     }
 
     /// <summary>
@@ -20,7 +20,8 @@ public class NetworkTransmitter_Starter : MonoBehaviour {
     public void StartClient()
     {
         AppConfig.GetPersistentData().PlayerInfo = new Shared_PlayerInfo() { name = AppConfig.GetName() };
-        client = new Client( ConnectionInfo.MatchMakerConnectionInfo());
+        MatchMessageHandler messageHandler = new MatchMessageHandler();
+        client = new Client( ConnectionInfo.MatchMakerConnectionInfo(), MatchMessageHandler);
     }
 
     /// <summary>
