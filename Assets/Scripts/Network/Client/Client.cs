@@ -10,7 +10,7 @@ using UnityEngine;
 public class Client
 {
     ClientConnection connection;
-    Client_MessageSender sender;
+    public Client_MessageSender sender;
     IMessageHandler messageHandler;
     Client_MessageReciever reciever;
 
@@ -20,7 +20,12 @@ public class Client
         sender = new Client_MessageSender(connection);
         this.messageHandler = messageHandler;
         reciever = new Client_MessageReciever(connection, messageHandler);
-
+    }
+    /// <summary>
+    /// Sends a register message to server, everything must be set up at this point
+    /// </summary>
+    public void Register()
+    {
         sender.RegisterAtServer(AppConfig.GetPersistentData().PlayerInfo);
     }
 

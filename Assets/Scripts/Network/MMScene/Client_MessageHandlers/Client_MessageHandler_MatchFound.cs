@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 internal class Client_MessageHandler_MatchFound
@@ -12,7 +14,8 @@ internal class Client_MessageHandler_MatchFound
 
     internal void Handle(Message_Updates_MatchFound data)
     {
-        client.KillConnection();
+        Debug.Log("Recieved Message_Updates_MatchFound");
+        //client.KillConnection();
         AppConfig.GetPersistentData().ip = data.ip;
         AppConfig.GetPersistentData().port = data.port;
         SceneManager.LoadScene(AppConfig.InGameSceneName);

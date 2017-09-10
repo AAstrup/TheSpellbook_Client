@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class AdapterMatch : MonoBehaviour {
     private Client client;
-
+    InGame_GUIHandler guiHandler;
     // Use this for initialization
     void Start () {
+        guiHandler = new InGame_GUIHandler();
         PersistentData data = AppConfig.GetPersistentData();
-        Client_MessageHandler messageHandler = new Client_MessageHandler();
+        MatchMessageHandler messageHandler = new MatchMessageHandler();
         client = new Client(new ConnectionInfo(data.port,data.ip), messageHandler);
-        messageHandler.Init(client);
-
+        Message_Request_JoinGame request = new Message_Request_JoinGame()
+        {
+            info = AppConfig.GetPersistentData().PlayerInfo
+        };
+        client.sender.Send(request);
     }
 	
 	// Update is called once per frame

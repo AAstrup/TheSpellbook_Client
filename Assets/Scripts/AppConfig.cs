@@ -17,6 +17,6 @@ public class AppConfig
     }
     public static string GetName()
     {
-        return GameObject.Find("ClientNameInputField").GetComponent<InputField>().name;
+        return GameObject.Find("ClientNameInputField").GetComponent<InputField>().text;
     }
 }

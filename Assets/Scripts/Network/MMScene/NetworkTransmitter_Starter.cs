@@ -18,10 +18,13 @@ public class NetworkTransmitter_Starter : MonoBehaviour {
     /// Starts as the role of a client
     /// </summary>
     public void StartClient()
-    {
+    {   
         AppConfig.GetPersistentData().PlayerInfo = new Shared_PlayerInfo() { name = AppConfig.GetName() };
-        MatchMessageHandler messageHandler = new MatchMessageHandler();
-        client = new Client( ConnectionInfo.MatchMakerConnectionInfo(), MatchMessageHandler);
+        MMMessageHandler messageHandler = new MMMessageHandler();
+        client = new Client( ConnectionInfo.MatchMakerConnectionInfo(), messageHandler);
+        messageHandler.Init(client);
+        client.Register();
+        guiHandler.SetUIState_Connecting();
     }
 
     /// <summary>

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 /// <summary>
 /// Responsible for handling responses from the sever as objects and
 /// finding a suitable handler for the object
 /// </summary>
-public class Client_MessageHandler : IMessageHandler
+public class MMMessageHandler : IMessageHandler
 {
-    private Client_MessageHandler_GameInfo handler_GameInfo;
     private Client_MessageHandler_InQueue handler_InQueue;
     private Client_MessageHandler_MatchFound handler_MatchFound;
 
-    public Client_MessageHandler()
+    public MMMessageHandler()
     {
-        handler_GameInfo = new Client_MessageHandler_GameInfo();
         handler_InQueue = new Client_MessageHandler_InQueue();
     }
 
@@ -24,10 +23,9 @@ public class Client_MessageHandler : IMessageHandler
 
     public void Handle(object data)
     {
+        Debug.Log("MMMessageHandler got data of type " + data.GetType());
         if (data is Message_Response_InQueue)
             handler_InQueue.Handle((Message_Response_InQueue)data);
-        else if (data is Message_Response_GameInfo)
-            handler_GameInfo.Handle((Message_Response_GameInfo)data);
         else if (data is Message_Updates_MatchFound)
             handler_MatchFound.Handle((Message_Updates_MatchFound)data);
         else
