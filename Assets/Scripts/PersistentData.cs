@@ -13,4 +13,5 @@ public class PersistentData : MonoBehaviour
     public int port;
     public string ip;
     public Shared_PlayerInfo PlayerInfo;
+    
 }

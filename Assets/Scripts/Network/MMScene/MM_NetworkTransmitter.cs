@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// The class responsible for starting a client or a server and updating them
 /// </summary>
-public class NetworkTransmitter_Starter : MonoBehaviour {
+public class MM_NetworkTransmitter : MonoBehaviour {
     Client client;
     private MM_GUIHandler guiHandler;
 
@@ -34,5 +34,14 @@ public class NetworkTransmitter_Starter : MonoBehaviour {
     {
         if (client != null)
             client.Update();
+    }
+
+    public void LeaveQueue()
+    {
+        Message_Request_LeaveQueue msg = new Message_Request_LeaveQueue()
+        {
+            info = AppConfig.GetPersistentData().PlayerInfo
+        };
+        client.sender.Send(msg);
     }
 }
