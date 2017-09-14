@@ -7,6 +7,8 @@ internal class MM_GUIHandler
     private GameObject MM;
     private GameObject Connecting;
     private GameObject InQueue;
+    private GameObject QueueReady;
+    public static Message_ServerRequest_ReadyCheck queueReadyMsg;
 
     public MM_GUIHandler()
     {
@@ -14,6 +16,7 @@ internal class MM_GUIHandler
         MM = GameObject.Find("GUI_MainMenu");
         Connecting = GameObject.Find("GUI_Connecting");
         InQueue = GameObject.Find("GUI_InQueue");
+        QueueReady = GameObject.Find("GUI_QueueReadyCheck");
         SetUIState_MM();
     }
 
@@ -35,12 +38,17 @@ internal class MM_GUIHandler
         InQueue.SetActive(true);
     }
 
+    internal void SetUIState_QueueRead()
+    {
+        DisableAll();
+        QueueReady.SetActive(true);
+    }
+
     private void DisableAll()
     {
         MM.SetActive(false);
         Connecting.SetActive(false);
         InQueue.SetActive(false);
+        QueueReady.SetActive(false);
     }
-
-    
 }

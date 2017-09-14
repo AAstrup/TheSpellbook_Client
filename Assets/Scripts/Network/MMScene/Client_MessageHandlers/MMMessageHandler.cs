@@ -9,11 +9,13 @@ using UnityEngine;
 public class MMMessageHandler : IMessageHandler
 {
     private Client_MessageHandler_InQueue handler_InQueue;
+    private Client_MessageHandler_ReadyCheck handler_ReadyCheck;
     private Client_MessageHandler_MatchFound handler_MatchFound;
 
     public MMMessageHandler()
     {
         handler_InQueue = new Client_MessageHandler_InQueue();
+        handler_ReadyCheck = new Client_MessageHandler_ReadyCheck();
     }
 
     public void Init(Client client)
@@ -28,6 +30,8 @@ public class MMMessageHandler : IMessageHandler
             handler_InQueue.Handle((Message_Response_InQueue)data);
         else if (data is Message_Updates_MatchFound)
             handler_MatchFound.Handle((Message_Updates_MatchFound)data);
+        else if (data is Message_ServerRequest_ReadyCheck)
+            handler_ReadyCheck.Handle((Message_ServerRequest_ReadyCheck)data);
         else
             throw new Exception("Data type UKNOWN! Type: " + data.ToString());
     }

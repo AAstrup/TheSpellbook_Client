@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 /// <summary>
 /// The class responsible for starting a client or a server and updating them
@@ -43,5 +42,15 @@ public class MM_NetworkTransmitter : MonoBehaviour {
             info = AppConfig.GetPersistentData().PlayerInfo
         };
         client.sender.Send(msg);
+    }
+
+    public void ReadyForQueue()
+    {
+        Message_ClientResponse_ReadyCheck msg = new Message_ClientResponse_ReadyCheck()
+        {
+            readyCheckGUID_FromServerReadyCheck = MM_GUIHandler.queueReadyMsg.ReadGUID()
+        };
+        client.sender.Send(msg);
+        Debug.Log("Sending " + msg.GetType());
     }
 }
