@@ -12,7 +12,7 @@ internal class Client_MessageHandler_MatchFound
         this.client = client;
     }
 
-    internal void Handle(Message_Updates_MatchFound data)
+    internal void Handle(Message_Update_MatchFound data)
     {
         Debug.Log("Recieved Message_Updates_MatchFound");
         //client.KillConnection();

@@ -1,16 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 
 /// <summary>
 /// The class responsible for starting a client or a server and updating them
 /// </summary>
-public class MM_NetworkTransmitter : MonoBehaviour {
+public class MM_NetworkTransmitter : MonoBehaviour, IUnityComponentResetable
+{
     Client client;
     private MM_GUIHandler guiHandler;
+    private UpdateController updateController;
 
     private void Start()
     {
         guiHandler = new MM_GUIHandler();
+        updateController = new UpdateController();
     }
 
     /// <summary>
@@ -19,8 +23,8 @@ public class MM_NetworkTransmitter : MonoBehaviour {
     public void StartClient()
     {   
         AppConfig.GetPersistentData().PlayerInfo = new Shared_PlayerInfo() { name = AppConfig.GetName() };
-        MMMessageHandler messageHandler = new MMMessageHandler();
-        client = new Client( ConnectionInfo.MatchMakerConnectionInfo(), messageHandler);
+        MMMessageHandler messageHandler = new MMMessageHandler(updateController);
+        client = new Client(this, ConnectionInfo.MatchMakerConnectionInfo(), messageHandler);
         messageHandler.Init(client);
         client.Register();
         guiHandler.SetUIState_Connecting();
@@ -31,6 +35,7 @@ public class MM_NetworkTransmitter : MonoBehaviour {
     /// </summary>
     void Update()
     {
+        updateController.Update(Time.deltaTime);
         if (client != null)
             client.Update();
     }
@@ -44,12 +49,17 @@ public class MM_NetworkTransmitter : MonoBehaviour {
         client.sender.Send(msg);
     }
 
+    public void Clean()
+    {
+        client = null;
+    }
+
     public void ReadyForQueue()
     {
         Message_ClientResponse_ReadyCheck msg = new Message_ClientResponse_ReadyCheck()
         {
             readyCheckGUID_FromServerReadyCheck = MM_GUIHandler.queueReadyMsg.ReadGUID()
-        };
+        };  
         client.sender.Send(msg);
         Debug.Log("Sending " + msg.GetType());
     }

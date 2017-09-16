@@ -9,13 +9,15 @@ using UnityEngine;
 /// </summary>
 public class Client
 {
+    private IUnityComponentResetable owner;
     ClientConnection connection;
     public Client_MessageSender sender;
     IMessageHandler messageHandler;
     Client_MessageReciever reciever;
 
-    public Client(ConnectionInfo connectionInfo, IMessageHandler messageHandler)
+    public Client(IUnityComponentResetable owner,ConnectionInfo connectionInfo, IMessageHandler messageHandler)
     {
+        this.owner = owner;
         connection = new ClientConnection(connectionInfo);
         sender = new Client_MessageSender(connection);
         this.messageHandler = messageHandler;
@@ -27,6 +29,12 @@ public class Client
     public void Register()
     {
         sender.RegisterAtServer(AppConfig.GetPersistentData().PlayerInfo);
+    }
+
+    internal void Dispose()
+    {
+        connection.GetSocket().Close();
+        owner.Clean();
     }
 
     /// <summary>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdapterMatch : MonoBehaviour {
+public class AdapterMatch : MonoBehaviour, IUnityComponentResetable {
     private Client client;
     InGame_GUIHandler guiHandler;
     // Use this for initialization
@@ -10,7 +10,7 @@ public class AdapterMatch : MonoBehaviour {
         guiHandler = new InGame_GUIHandler();
         PersistentData data = AppConfig.GetPersistentData();
         MatchMessageHandler messageHandler = new MatchMessageHandler();
-        client = new Client(new ConnectionInfo(data.port,data.ip), messageHandler);
+        client = new Client(this,new ConnectionInfo(data.port,data.ip), messageHandler);
         Message_Request_JoinGame request = new Message_Request_JoinGame()
         {
             info = AppConfig.GetPersistentData().PlayerInfo
@@ -22,4 +22,14 @@ public class AdapterMatch : MonoBehaviour {
 	void Update () {
         client.Update();
 	}
+
+    public void TestWinCardThrown()
+    {
+        Message_Request_PlayCard playcard = new Message_Request_PlayCard() { CardID = 0 };
+        client.sender.Send(playcard);
+    }
+
+    public void Clean()
+    {
+    }
 }

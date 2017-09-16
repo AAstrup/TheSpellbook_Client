@@ -19,4 +19,8 @@ public class AppConfig
     {
         return GameObject.Find("ClientNameInputField").GetComponent<InputField>().text;
     }
+    public static Slider GetReadyCheckSlider()
+    {
+        return GameObject.Find("ReadyCheckSlider").GetComponent<Slider>();
+    }
 }
