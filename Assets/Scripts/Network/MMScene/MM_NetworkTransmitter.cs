@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// The class responsible for starting a client or a server and updating them
@@ -20,14 +20,23 @@ public class MM_NetworkTransmitter : MonoBehaviour, IUnityComponentResetable
     /// <summary>
     /// Starts as the role of a client
     /// </summary>
-    public void StartClient()
-    {   
+    public void StartOnlineClient()
+    {
         AppConfig.GetPersistentData().PlayerInfo = new Shared_PlayerInfo() { name = AppConfig.GetName() };
         MMMessageHandler messageHandler = new MMMessageHandler(updateController);
         client = new Client(this, ConnectionInfo.MatchMakerConnectionInfo(), messageHandler);
         messageHandler.Init(client);
         client.Register();
         guiHandler.SetUIState_Connecting();
+    }
+
+    /// <summary>
+    /// Starts as the role of a client
+    /// </summary>
+    public void StartOfflineClient()
+    {
+        AppConfig.GetPersistentData().PlayerInfo = new Shared_PlayerInfo() { name = AppConfig.GetName() };
+        SceneManager.LoadScene(AppConfig.OfflineSceneName);
     }
 
     /// <summary>

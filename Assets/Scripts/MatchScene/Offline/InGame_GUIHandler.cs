@@ -1,5 +1,4 @@
 ﻿using System;
-using Match;
 using UnityEngine;
 
 internal class InGame_GUIHandler
@@ -22,18 +21,18 @@ internal class InGame_GUIHandler
         LostPanel.SetActive(false);
     }
 
-    internal void SetNames(Message_Response_GameState data)
+    public void SetNames(Shared_InGame_PlayerInfo me, Shared_InGame_PlayerInfo opp)
     {
-        GUI_Me.nameText.text = data.me.name;
-        GUI_Opp.nameText.text = data.opp.name;
+        GUI_Me.nameText.text = me.name;
+        GUI_Opp.nameText.text = opp.name;
     }
 
-    internal void Won()
+    public void Won()
     {
         WonPanel.SetActive(true);
     }
 
-    internal void Lost()
+    public void Lost()
     {
         LostPanel.SetActive(true);
     }

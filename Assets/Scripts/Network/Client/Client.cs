@@ -24,7 +24,43 @@ public class Client
         reciever = new Client_MessageReciever(connection, messageHandler);
     }
     /// <summary>
-    /// Sends a register message to server, everything must be set up at this point
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /// Sends a register message to server, everything must be set up at this point
     /// </summary>
     public void Register()
     {

@@ -10,6 +10,7 @@ public class AppConfig
     public static int PortOfMatchMaker = 61497;
     public static string IpOfMatchMaker = "127.0.0.1";
     public static string InGameSceneName = "MatchScene";
+    public static string OfflineSceneName = "OfflineMatchScene";
 
     public static PersistentData GetPersistentData()
     {

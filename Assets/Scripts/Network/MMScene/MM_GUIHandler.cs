@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 internal class MM_GUIHandler
 {
@@ -42,6 +43,7 @@ internal class MM_GUIHandler
     {
         DisableAll();
         QueueReady.SetActive(true);
+        GameObject.Find("AcceptQueueButton").GetComponent<Button>().interactable = true;
     }
 
     private void DisableAll()
