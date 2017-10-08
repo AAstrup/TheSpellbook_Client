@@ -1,4 +1,5 @@
-﻿/// <summary>
+﻿using UnityEngine;
+/// <summary>
 /// Manages all classes in the scene InGame
 /// </summary>
 public class InGameWrapper
@@ -7,13 +8,15 @@ public class InGameWrapper
     public CarWrapper carController;
     public PlayersWrapper playersWrapper;
     public MapWrapper mapWrapper;
+    public Camera camera;
 
     public InGameWrapper(UnityData unityData)
     {
         instance = this;
+        camera = GameObject.Find("Camera").GetComponent<Camera>();
         carController = new CarWrapper(unityData.unityCarData);
         playersWrapper = new PlayersWrapper(unityData.playerData);
-        mapWrapper = new MapWrapper(unityData.mapData, playersWrapper.GetLocalPlayer());
+        mapWrapper = new MapWrapper(unityData.mapData, playersWrapper.GetOnlyLocalPlayer());
     }
 
     public void Update(float deltaTime)

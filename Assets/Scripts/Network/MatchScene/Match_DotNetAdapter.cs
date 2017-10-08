@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Match_DotNetAdapter : MonoBehaviour {
+    public static Match_DotNetAdapter instance;
 
     private MatchClient clientEndPoint;
     private Match_GUIHandler mM_GUIHandler;
 
-    private void Start()
+    void Awake()
+    {
+        instance = this;
+    }
+
+    void Start()
     {
         mM_GUIHandler = new Match_GUIHandler();
         StartOnlineClient();
@@ -28,4 +34,9 @@ public class Match_DotNetAdapter : MonoBehaviour {
         if(clientEndPoint != null)
             clientEndPoint.Update(Time.deltaTime);
 	}
+
+    public void Send(object msg)
+    {
+        clientEndPoint.Send(msg);
+    }
 }

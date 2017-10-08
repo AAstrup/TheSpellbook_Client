@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientServerSharedGameObjectMessages;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
@@ -6,26 +7,18 @@ using UnityEngine;
 /// </summary>
 public class PlayerFactory
 {
-    /// <summary>
-    /// Creates player controllers and gameobjects
-    /// </summary>
-    /// <param name="playerData">Data for players</param>
-    /// <returns></returns>
-    public List<PlayerController> CreatePlayers(UnityPlayerData playerData)
+    private UnityPlayerData playerData;
+
+    public PlayerFactory(UnityPlayerData playerData)
     {
-        //var playerList = new List<PlayerController>();
-        //foreach (var setup in playerData.unitySinglePlayerSetup)
-        //{
-        //    playerList.Add(CreatePlayer(playerData.playerPrefab,setup, playerData));
-        //}
-        //return playerList;
-        throw new NotImplementedException("This should be done networked, the server sending a message for each client");
+        this.playerData = playerData;
     }
 
-    private PlayerController CreatePlayer(GameObject playerPrefab,Vector3 pos,UnityPlayerData playerData)
+    public PlayerController CreatePlayer(GameObject playerPrefab, Message_ServerCommand_CreateGameObject info)
     {
-        GameObject gmj = GameObject.Instantiate(playerPrefab, pos, Quaternion.identity);
-        var playerController = new PlayerController(gmj, playerData);
+        GameObject gmj = GameObject.Instantiate(playerPrefab, new Vector3(info.transform.xPos,playerData.StaticYPos, info.transform.zPos), Quaternion.identity);
+        var playerController = new PlayerController(gmj, info,playerData);
+        Debug.Log("Spawning gmj with name " + gmj.name);
         return playerController;
     }
 }

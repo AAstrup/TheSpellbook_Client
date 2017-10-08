@@ -1,38 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using ClientServerSharedGameObjectMessages;
 using UnityEngine;
 
 public class PlayersWrapper
 {
-    private List<PlayerController> players;
+    private List<PlayerController> onlinePlayers;
     private PlayerController localPlayer;
-    Dictionary<int, PlayerController> GUIDToPlayer;
+    Dictionary<int, PlayerController> idToPlayerController;
+    private PlayerFactory playerFactory;
+    private UnityPlayerData playerData;
 
     public PlayersWrapper(UnityPlayerData playerData)
     {
-        GUIDToPlayer = new Dictionary<int, PlayerController>();
-        var playerFactory = new PlayerFactory();
-        players = playerFactory.CreatePlayers(playerData);
+        idToPlayerController = new Dictionary<int, PlayerController>();
+        playerFactory = new PlayerFactory(playerData);
+        this.playerData = playerData;
+        onlinePlayers = new List<PlayerController>();
     }
 
-    internal void UpdateEnemy(Message_Command_PlayerMovementUpdate data)
+    public void Update(float deltaTime)
     {
-        GUIDToPlayer[data.GMJGUID].SetTargetPos(new Vector3(data.moveTargetXPos, StaticVariables.GetYPos(), data.moveTargetZPos));
-        GUIDToPlayer[data.GMJGUID].SetCurrentPos(new Vector3(data.currentXPos, StaticVariables.GetYPos(), data.currentZPos));
-    }
-
-    internal void Update(float deltaTime)
-    {
-        foreach (var item in players)
+        if (localPlayer != null)
+        {
+            localPlayer.CheckInput();
+            localPlayer.Update(deltaTime);
+        }
+        foreach (var item in onlinePlayers)
         {
             item.Update(deltaTime);
         }
     }
 
-    public List<PlayerController> GetPlayers() { return players; }
-
-    internal PlayerController GetLocalPlayer()
+    /// <summary>
+    /// Spawns a player and creates a playercontroller
+    /// Also adds it to list of online players or sets it as the local player
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="isMine">Whther or not it is owned by the local player</param>
+    internal void SpawnPlayer(Message_ServerCommand_CreateGameObject data, bool isMine)
     {
-        return localPlayer;
+        var player = playerFactory.CreatePlayer(playerData.playerPrefab, data);
+        idToPlayerController.Add(data.GmjGUID, player);
+        if (isMine)
+            localPlayer = player;
+        else
+            onlinePlayers.Add(player);
     }
+
+    public List<PlayerController> GetOnlyOnlinePlayers() { return onlinePlayers; }
+    public PlayerController GetPlayerByGUID(int GMJGUID) {
+        return idToPlayerController[GMJGUID];
+    }
+    public PlayerController GetOnlyLocalPlayer() { return localPlayer; }
 }

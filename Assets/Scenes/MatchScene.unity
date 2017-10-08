@@ -247,7 +247,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1197386009284876, guid: 8aa4b9be8b5cb684caa52d0557f0c21e, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8aa4b9be8b5cb684caa52d0557f0c21e, type: 2}
@@ -556,6 +556,15 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1215209169342248, guid: 1c0d2a360b0bca243803d967b99f1ff5, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114260297802998128, guid: 1c0d2a360b0bca243803d967b99f1ff5,
+        type: 2}
+      propertyPath: groundMask.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1c0d2a360b0bca243803d967b99f1ff5, type: 2}
   m_IsPrefabParent: 0
@@ -790,7 +799,7 @@ GameObject:
   - component: {fileID: 989289551}
   - component: {fileID: 989289550}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1268,6 +1277,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 61fb1abdccae07948adc571ceea5f0bf, type: 2}
+    - target: {fileID: 1643017522580510, guid: 7a89a32df186c144f9052ec3c2e3a323, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7a89a32df186c144f9052ec3c2e3a323, type: 2}
   m_IsPrefabParent: 0
