@@ -16,11 +16,11 @@ public class Match_DotNetAdapter : MonoBehaviour {
 
     // Use this for initialization
     public void StartOnlineClient () {
-        IMatchEventHandler matchEventHandler = new Match_EventHandler(mM_GUIHandler);
-        ILogger logger = new UnityLogger();
-        PersistentData data = UnityConfig.GetPersistentDataContainer().persistentData;
-        Dictionary<Type, IMessageHandlerCommandClient> dictionary = MessageHandlerFactory.CreateDictionary();
-        clientEndPoint = new MatchClient(matchEventHandler, logger, data, dictionary);
+        var matchEventHandler = new Match_EventHandler(mM_GUIHandler);
+        var logger = new UnityLogger();
+        var data = UnityConfig.GetPersistentDataContainer().persistentData;
+        var messageHandlerExpansion = MessageHandlerFactory.CreateMessageHandlerExpansion();
+        clientEndPoint = new MatchClient(matchEventHandler, logger, data, messageHandlerExpansion);
     }
 	
 	// Update is called once per frame

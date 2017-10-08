@@ -1,4 +1,4 @@
-﻿internal class Message_Command_Handler_PlayerMovementUpdate : IMessageHandlerCommandClient
+﻿internal class MessageHandler_Command_PlayerMovementUpdate : IMessageHandlerCommandClient
 {
     public void Handle(object objData)
     {
