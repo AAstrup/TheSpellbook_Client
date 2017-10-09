@@ -8,6 +8,7 @@ public class InGameWrapper
     public CarWrapper carController;
     public PlayersWrapper playersWrapper;
     public MapWrapper mapWrapper;
+    public SpellWrapper spellsWrapper;
     public Camera camera;
 
     public InGameWrapper(UnityData unityData)
@@ -17,6 +18,7 @@ public class InGameWrapper
         carController = new CarWrapper(unityData.unityCarData);
         playersWrapper = new PlayersWrapper(unityData.playerData);
         mapWrapper = new MapWrapper(unityData.mapData, playersWrapper.GetOnlyLocalPlayer());
+        spellsWrapper = new SpellWrapper(unityData.spellData);
     }
 
     public void Update(float deltaTime)
@@ -24,5 +26,6 @@ public class InGameWrapper
         carController.Update(deltaTime);
         playersWrapper.Update(deltaTime);
         mapWrapper.Update(deltaTime);
+        spellsWrapper.Update(deltaTime);
     }
 }

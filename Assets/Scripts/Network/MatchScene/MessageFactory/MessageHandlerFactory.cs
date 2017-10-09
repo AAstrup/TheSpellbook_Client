@@ -9,6 +9,7 @@ internal class MessageHandlerFactory : Dictionary<Type, IMessageHandlerCommandCl
         var dictionary = new Dictionary<Type, IMessageHandlerCommandClient>();
         dictionary.Add(typeof(Message_Command_PlayerMovementUpdate), new MessageHandler_Command_PlayerMovementUpdate());
         dictionary.Add(typeof(Message_ServerCommand_CreateGameObject), new MessageHandler_ServerCommand_CreateGameObject());
+        dictionary.Add(typeof(Message_ServerResponse_CreateSpell), new MessageHandler_ServerResponse_CreateSpell());
         return dictionary;
     }
 }

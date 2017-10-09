@@ -39,6 +39,36 @@ public class PlayerController
 
     internal void CheckInput()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            RaycastHit hit = new RaycastHit();
+            Ray mouseRay = InGameWrapper.instance.camera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(mouseRay, out hit, 100f, generalPlayerData.groundMask))
+            {
+                Vector3 direction = hit.point - playerGmj.transform.position;
+                direction.Normalize();
+                Debug.DrawLine(hit.point, playerGmj.transform.position);
+                var msg = new Message_ClientRequest_CreateSpell()
+                {
+                    ownerGUID = OwnerID,
+                    spellType = SpellType.Fireball,
+                    xPos = playerGmj.transform.position.x,
+                    zPos = playerGmj.transform.position.z,
+                    xDir = direction.x,
+                    zDir = direction.z
+                };
+                Match_DotNetAdapter.instance.Send(msg);
+            }
+        }
+
+        CheckMovement();
+    }
+
+    /// <summary>
+    /// Checks input for a change in target position
+    /// </summary>
+    private void CheckMovement()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit = new RaycastHit();

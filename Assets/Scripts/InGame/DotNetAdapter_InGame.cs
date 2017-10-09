@@ -30,12 +30,14 @@ public class DotNetAdapter_InGame : MonoBehaviour {
         string playerDataGmjName = "UnityData_Prefab_Player";
         string carDataGmjName = "UnityData_Prefab_Car";
         string mapDataGmjName = "UnityData_Prefab_Map";
+        string spellDataGmjName = "UnityData_Prefab_Spell";
 
         return new UnityData()
         {
             playerData = GameObject.Find(playerDataGmjName).GetComponent<UnityPlayerData>(),
             unityCarData = GameObject.Find(carDataGmjName).GetComponent<UnityCarData>(),
-            mapData = GameObject.Find(mapDataGmjName).GetComponent<UnityMapData>()
+            mapData = GameObject.Find(mapDataGmjName).GetComponent<UnityMapData>(),
+            spellData = GameObject.Find(spellDataGmjName).GetComponent<UnitySpellData>()
         };
     }
 }
