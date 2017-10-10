@@ -22,17 +22,29 @@ internal class SpellController_Fireball : SpellControllers_HitDetection, ISpellC
     {
         gmj.transform.position += direction * deltaTime;
         if (CheckForCollisions()) {
-            Hit(playerHit);
-            SendCollisionsMessage();
+            Vector3 direction = CalCulateDirection(playerHit);
+            Hit(playerHit, direction);
+            SendCollisionsMessage(direction);
         }
     }
 
-    private void SendCollisionsMessage()
+    private Vector3 CalCulateDirection(PlayerController playerHit)
+    {
+        Vector3 direction = playerHit.GetGmj().transform.position - gmj.transform.position;
+        direction = new Vector3(direction.x, 0f, direction.z);
+        direction.Normalize();
+        return direction;
+    }
+
+    private void SendCollisionsMessage(Vector3 hitDirection)
     {
         Message_ClientCommand_SpellHit msg = new Message_ClientCommand_SpellHit()
         {
             playerGMJHit = playerHit.GetID(),
-            spellHitGmjID = spell.spellGmjID
+            spellHitGmjID = spell.spellGmjID,
+            hitDirectionX = hitDirection.x,
+            hitDirectionY = 0f,
+            hitDirectionZ = hitDirection.z,
         };
         Match_DotNetAdapter.instance.Send(msg);
     }
@@ -42,10 +54,11 @@ internal class SpellController_Fireball : SpellControllers_HitDetection, ISpellC
         gmj.transform.position += direction * deltaTime;
     }
 
-    public void Hit(PlayerController playerHit)
+    public void Hit(PlayerController playerHit,Vector3 hitDirection)
     {
         GameObject.Destroy(gmj);
         isDead = true;
+        playerHit.ApplyPushBack(hitDirection * pushBackMultiplier * UnityStaticValues.PushBackMultiplier);
         InGameWrapper.instance.spellsWrapper.DestroySpell(this,false);
     }
 

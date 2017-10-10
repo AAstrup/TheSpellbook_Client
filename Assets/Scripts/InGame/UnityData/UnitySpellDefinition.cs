@@ -9,4 +9,5 @@ public class UnitySpellDefinition
     public string name;
     public float hitRange = 1f;
     public GameObject prefabs;
+    public float pushBackMultiplier = 1f;
 }

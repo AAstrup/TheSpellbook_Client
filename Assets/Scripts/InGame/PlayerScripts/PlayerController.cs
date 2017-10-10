@@ -11,6 +11,7 @@ public class PlayerController
     private UnityPlayerData generalPlayerData;
     private UnityPlayerData playerData;
     private Vector3 targetPos;
+    private Vector3 pushBack = Vector3.zero;
     int PlayerControllerGUID;
     int OwnerID;
 
@@ -70,6 +71,11 @@ public class PlayerController
         CheckMovement();
     }
 
+    internal void ApplyPushBack(Vector3 hitDirection)
+    {
+        pushBack += hitDirection;
+    }
+
     /// <summary>
     /// Checks input for a change in target position
     /// </summary>
@@ -101,8 +107,9 @@ public class PlayerController
         var pos = playerGmj.transform.position;
         Vector3 direction = targetPos - playerGmj.transform.position;
         direction.Normalize();
-        var proposedPosition = pos + direction * Time.deltaTime;
+        var proposedPosition = pos + pushBack + direction * Time.deltaTime;
         var finalPos = proposedPosition;
         playerGmj.transform.position = finalPos;
+        pushBack = pushBack * (1 - deltaTime);
     }
 }

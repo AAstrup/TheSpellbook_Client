@@ -5,6 +5,8 @@ public abstract class SpellControllers_HitDetection
 {
     protected GameObject gmj;
     private float hitRange;
+    protected float pushBackMultiplier;
+
     //Will be changed to a uniform implementation for spells that can hit multiple and so on
     //PlayerController is null until someone is hit
     protected PlayerController playerHit;
@@ -14,6 +16,7 @@ public abstract class SpellControllers_HitDetection
     {
         this.gmj = gmj;
         hitRange = InGameWrapper.instance.spellsWrapper.spellData.GetSpellDefinition(spellType).hitRange;
+        pushBackMultiplier = InGameWrapper.instance.spellsWrapper.spellData.GetSpellDefinition(spellType).pushBackMultiplier;
     }
     
     /// <summary>
