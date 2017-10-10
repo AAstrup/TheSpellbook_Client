@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class SpellWrapper
 {
-    private UnitySpellData spellData;
+    public UnitySpellData spellData;
     private SpellFactory spellFactory;
     private Dictionary<int, ISpellController> spellsDictionary;
     public List<ISpellController> localSpells;
@@ -22,7 +22,7 @@ public class SpellWrapper
 
     public void SpawnSpell(Message_ServerResponse_CreateSpell spell,bool isMine)
     {
-        var spellController = spellFactory.CreateSpell(spellData.GetSpellDefinition(spell.request.spellType), spell.request);
+        var spellController = spellFactory.CreateSpell(spellData.GetSpellDefinition(spell.request.spellType), spell);
         spellsDictionary.Add(spell.spellGmjID, spellController);
         if (isMine)
             localSpells.Add(spellController);
@@ -35,11 +35,27 @@ public class SpellWrapper
         for (int i = 0; i < localSpells.Count; i++)
         {
             localSpells[i].LocalUpdate(deltaTime);
+            if (localSpells[i].IsDead())
+                DestroySpell(localSpells[i],true);
         }
 
         for (int i = 0; i < onlineSpells.Count; i++)
         {
             onlineSpells[i].OnlineUpdate(deltaTime);
         }
+    }
+
+    public void DestroySpell(ISpellController spellController,bool isLocal)
+    {
+        spellsDictionary.Remove(spellController.GetGuid());
+        if (isLocal)
+            localSpells.Remove(spellController);
+        else
+            onlineSpells.Remove(spellController);
+    }
+
+    public ISpellController GetSpellController(int GUID)
+    {
+        return spellsDictionary[GUID];
     }
 }

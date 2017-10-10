@@ -11,14 +11,14 @@ public class PlayerController
     private UnityPlayerData generalPlayerData;
     private UnityPlayerData playerData;
     private Vector3 targetPos;
-    int GMJGUID;
+    int PlayerControllerGUID;
     int OwnerID;
 
     public PlayerController(GameObject playerGmj, Message_ServerCommand_CreateGameObject info, UnityPlayerData generalPlayerData)
     {
         this.playerGmj = playerGmj;
         this.generalPlayerData = generalPlayerData;
-        GMJGUID = info.GmjGUID;
+        PlayerControllerGUID = info.GmjGUID;
         OwnerID = info.OwnerGUID;
         playerGmj.transform.position = new Vector3(info.transform.xPos, info.transform.yPos, info.transform.zPos);
     }
@@ -32,6 +32,12 @@ public class PlayerController
     {
         targetPos = vector3;
     }
+
+    internal int GetID()
+    {
+        return PlayerControllerGUID;
+    }
+
     internal void SetCurrentPos(Vector3 vector3)
     {
         playerGmj.transform.position = vector3;
@@ -81,7 +87,7 @@ public class PlayerController
                 {
                     currentXPos = playerGmj.transform.position.x,
                     currentZPos = playerGmj.transform.position.z,
-                    GMJGUID = GMJGUID,
+                    GMJGUID = PlayerControllerGUID,
                     moveTargetXPos = targetPos.x,
                     moveTargetZPos = targetPos.z
                 };
