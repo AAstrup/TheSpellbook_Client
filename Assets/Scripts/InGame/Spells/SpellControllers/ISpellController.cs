@@ -19,6 +19,6 @@ public interface ISpellController
     /// </summary>
     /// <param name="playerHit">Player hit</param>
     /// <param name="hitDirection">Hit direction from the spell to the player</param>
-    void Hit(PlayerController playerHit,Vector3 hitDirection);
+    void Hit(PlayerController playerHit,Vector3 hitDirection, Vector3 updatePlayerPos);
     int GetGuid();
 }
