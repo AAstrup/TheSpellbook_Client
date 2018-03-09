@@ -1,9 +1,9 @@
 ﻿using ClientServerSharedGameObjectMessages;
 using UnityEngine;
 
-public abstract class SpellControllers_HitDetection
+public abstract class SpellControllers_HitDetection : SpellController_Base
 {
-    protected GameObject gmj;
+    protected GameObject projectile;
     private float hitRange;
     protected float pushBackMultiplier;
 
@@ -12,11 +12,13 @@ public abstract class SpellControllers_HitDetection
     protected PlayerController playerHit;
     protected bool isDead;
 
-    public SpellControllers_HitDetection(SpellType spellType, GameObject gmj)
+    public SpellControllers_HitDetection(SpellType spellType, UnitySpellDefinition unitySpellDefinition,Vector3 spawnPos, double timeStartedCasting,Vector3 playerCastPos, int ownerGUID, int rank) 
+        : base(timeStartedCasting, unitySpellDefinition.GetCastTimeInSeconds(rank))
     {
-        this.gmj = gmj;
-        hitRange = InGameWrapper.instance.spellsWrapper.spellData.GetSpellDefinition(spellType).hitRange;
-        pushBackMultiplier = InGameWrapper.instance.spellsWrapper.spellData.GetSpellDefinition(spellType).pushBackMultiplier;
+        projectile = (GameObject)GameObject.Instantiate(unitySpellDefinition.projectilePrefab, new Vector3(spawnPos.x, spawnPos.y, spawnPos.z), Quaternion.identity);
+
+        hitRange = InGameWrapper.instance.spellsWrapper.spellData.GetSpellDefinition(spellType).GetHitRange(rank);
+        pushBackMultiplier = InGameWrapper.instance.spellsWrapper.spellData.GetSpellDefinition(spellType).GetPushBackMultiplier(rank);
     }
     
     /// <summary>
@@ -27,7 +29,9 @@ public abstract class SpellControllers_HitDetection
     protected bool CheckForCollisions() {
         foreach (var player in InGameWrapper.instance.playersWrapper.GetOnlyOnlinePlayers())
         {
-            if(Vector3.Distance(player.GetGmj().transform.position, gmj.transform.position) <= hitRange)
+            var dist = Vector2.Distance(new Vector2(player.GetGmj().transform.position.x, player.GetGmj().transform.position.z), new Vector2(projectile.transform.position.x, projectile.transform.position.z));
+
+            if (dist <= hitRange)
             {
                 playerHit = player;
                 isDead = true;
@@ -40,5 +44,10 @@ public abstract class SpellControllers_HitDetection
     protected PlayerController GetPlayerHit()
     {
         return playerHit;
+    }
+
+    public void Destroy()
+    {
+        GameObject.Destroy(projectile);
     }
 }

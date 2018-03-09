@@ -1,11 +1,11 @@
 ﻿using ClientServerSharedGameObjectMessages;
 using UnityEngine;
 
-public class SpellFactory_FireBall : ISpellFactory
+public class SpellFactory_FireBall : ISpellFactory_SpellWithDirection
 {
-    public ISpellController CreateSpellController(GameObject gmj, Message_ServerResponse_CreateSpell spellResponse)
+    public ISpellController CreateSpellController(Message_ServerResponse_CreateSpellWithDirection spellResponse, UnitySpellDefinition definition)
     {
-        return new SpellController_Fireball(gmj, spellResponse);
+        return new SpellController_Fireball(spellResponse, definition);
     }
 
     public SpellType GetSpellTypeSupported()

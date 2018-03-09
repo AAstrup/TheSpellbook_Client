@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4456973056870458}
   - component: {fileID: 114260297802998128}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UnityData_Prefab_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3ed6239f8c6d847bd2169f320dc002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1512129509845952, guid: 925233137b9723543aa5154b89876947,
+  playerPrefab: {fileID: 1570983768012850, guid: 925233137b9723543aa5154b89876947,
     type: 2}
-  unitySinglePlayerSetup:
-  - name: Player1
-    InputXAxis: Horizontal
-    InputZAxis: Vertical
+  MoveSpeed: 1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295

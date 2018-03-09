@@ -16,7 +16,8 @@ public class UnityConfig
     }
     public static string GetName()
     {
-        return GameObject.Find("ClientNameInputField").GetComponent<InputField>().text;
+        //return GameObject.Find("ClientNameInputField").GetComponent<InputField>().text;
+        return "Unnamed";
     }
     public static Slider GetReadyCheckSlider()
     {

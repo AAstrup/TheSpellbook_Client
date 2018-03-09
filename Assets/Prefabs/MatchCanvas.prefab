@@ -90,7 +90,6 @@ GameObject:
   - component: {fileID: 222947423357410152}
   - component: {fileID: 114826393889788332}
   - component: {fileID: 114768606253421158}
-  - component: {fileID: 114698526650746916}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -264,7 +263,6 @@ GameObject:
   - component: {fileID: 222948757982802940}
   - component: {fileID: 114726583979985484}
   - component: {fileID: 114970307399505650}
-  - component: {fileID: 114699376214790852}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -652,28 +650,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114698526650746916
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1184315418663038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12d960fd90706c84485a575f20be04a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114699376214790852
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1904897534529364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12d960fd90706c84485a575f20be04a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114699535485613808
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -766,18 +742,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114826393889788332}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114698526650746916}
-        m_MethodName: LoadScene_MM
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114777176024708264
@@ -894,7 +859,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114699376214790852}
+      - m_Target: {fileID: 0}
         m_MethodName: LoadScene_MM
         m_Mode: 1
         m_Arguments:

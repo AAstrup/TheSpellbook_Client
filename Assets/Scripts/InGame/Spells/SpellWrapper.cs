@@ -20,10 +20,20 @@ public class SpellWrapper
         onlineSpells = new List<ISpellController>();
     }
 
-    public void SpawnSpell(Message_ServerResponse_CreateSpell spell,bool isMine)
+    public void SpawnSpell(Message_ServerResponse_CreateSpellWithDirection spell, bool isMine)
     {
         var spellController = spellFactory.CreateSpell(spellData.GetSpellDefinition(spell.request.spellType), spell);
-        spellsDictionary.Add(spell.spellGmjID, spellController);
+        spellsDictionary.Add(spell.spellID, spellController);
+        if (isMine)
+            localSpells.Add(spellController);
+        else
+            onlineSpells.Add(spellController);
+    }
+
+    public void SpawnSpell(Message_ServerResponse_CreateSpellInStaticPosition spell, bool isMine)
+    {
+        var spellController = spellFactory.CreateSpell(spellData.GetSpellDefinition(spell.request.spellType), spell);
+        spellsDictionary.Add(spell.spellID, spellController);
         if (isMine)
             localSpells.Add(spellController);
         else
@@ -41,6 +51,11 @@ public class SpellWrapper
 
         for (int i = 0; i < onlineSpells.Count; i++)
         {
+            if (onlineSpells[i].IsDead())
+            {
+                onlineSpells.RemoveAt(i);
+                continue;
+            }
             onlineSpells[i].OnlineUpdate(deltaTime);
         }
     }
@@ -57,5 +72,19 @@ public class SpellWrapper
     public ISpellController GetSpellController(int GUID)
     {
         return spellsDictionary[GUID];
+    }
+
+    internal void TEMPORARYDESTROYALLSPELLS()
+    {
+        foreach (var item in localSpells)
+        {
+            item.Destroy();
+        }
+        localSpells = new List<ISpellController>();
+        foreach (var item in onlineSpells)
+        {
+            item.Destroy();
+        }
+        onlineSpells = new List<ISpellController>();
     }
 }

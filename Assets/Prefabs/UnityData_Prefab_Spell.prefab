@@ -51,7 +51,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeddef4d39372254fb7ab42ed99e6756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spells:
+  spellDefinitions:
   - type: 0
     name: FireBall
-    prefabs: {fileID: 1893289905239984, guid: 0239274f0a5105741bee3674d6a4fd2e, type: 2}
+    UISprite: {fileID: 21300000, guid: d41ff3b3475455b41a30e8f9b02aa352, type: 3}
+    rank: 0
+    upgrades:
+    - damage: 2
+      pushBackMultiplier: 1.5
+      Cooldown: 4
+      CastTime: 0.5
+      hitRange: 1
+      moveSpeed: 3
+      costToUpgrade: 10
+    - damage: 2
+      pushBackMultiplier: 2
+      Cooldown: 1
+      CastTime: 0.5
+      hitRange: 1
+      moveSpeed: 3
+      costToUpgrade: 10
+    castEffectPrefab: {fileID: 0}
+    projectilePrefab: {fileID: 1105882452304234, guid: 0239274f0a5105741bee3674d6a4fd2e,
+      type: 2}
+    hitEffectPrefab: {fileID: 1662194434732636, guid: ec43104d0fa51c746b388e6e796329f1,
+      type: 2}
+  - type: 1
+    name: Explode
+    UISprite: {fileID: 21300000, guid: b312589b493f16e43aa0c9d52d001902, type: 3}
+    rank: -1
+    upgrades:
+    - damage: 2
+      pushBackMultiplier: 1.5
+      Cooldown: 2
+      CastTime: 1
+      hitRange: 1
+      moveSpeed: 0
+      costToUpgrade: 0
+    castEffectPrefab: {fileID: 0}
+    projectilePrefab: {fileID: 0}
+    hitEffectPrefab: {fileID: 1662194434732636, guid: ec43104d0fa51c746b388e6e796329f1,
+      type: 2}

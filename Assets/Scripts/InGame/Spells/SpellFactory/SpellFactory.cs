@@ -5,25 +5,43 @@ using UnityEngine;
 
 internal class SpellFactory
 {
-    private UnitySpellData spellData;
-    private Dictionary<SpellType, ISpellFactory> spellsFactory;
+    //private UnitySpellData spellData;
+    private Dictionary<SpellType, ISpellFactory_InStaticPosition> staticSpellsFactory;
+    private Dictionary<SpellType, ISpellFactory_SpellWithDirection> directionSpellsFactory;
 
     public SpellFactory(UnitySpellData spellData)
     {
-        this.spellData = spellData;
-        spellsFactory = new Dictionary<SpellType, ISpellFactory>();
-        AddToSpellsFactory(new SpellFactory_FireBall());
+        //Direction
+        directionSpellsFactory = new Dictionary<SpellType, ISpellFactory_SpellWithDirection>();
+        AddDirectionToSpellsFactory(new SpellFactory_FireBall());
+        //Static
+        staticSpellsFactory = new Dictionary<SpellType, ISpellFactory_InStaticPosition>();
+        AddStaticToSpellsFactory(new SpellFactory_Explode());
+        var debug = new SpellFactory_Teleport();
+        AddStaticToSpellsFactory(debug);
     }
 
-    private void AddToSpellsFactory(ISpellFactory factory)
+    private void AddDirectionToSpellsFactory(ISpellFactory_SpellWithDirection factory)
     {
-        spellsFactory.Add(factory.GetSpellTypeSupported(), factory);
+        directionSpellsFactory.Add(factory.GetSpellTypeSupported(), factory);
     }
 
-    public ISpellController CreateSpell(UnitySpellDefinition unitySpellDefinition, Message_ServerResponse_CreateSpell spell)
+    private void AddStaticToSpellsFactory(ISpellFactory_InStaticPosition factory)
     {
-        GameObject gmj = (GameObject)GameObject.Instantiate(unitySpellDefinition.prefabs, new Vector3(spell.request.xPos, UnityStaticValues.StaticYPos, spell.request.zPos), Quaternion.identity);
-        var spellController = spellsFactory[spell.request.spellType].CreateSpellController(gmj, spell);
-        return spellController;
+        staticSpellsFactory.Add(factory.GetSpellTypeSupported(), factory);
+    }
+
+    /// <summary>
+    /// Creates a spell controller for a given spell using a ISpellFactory
+    /// </summary>
+    /// <param name="unitySpellDefinition">Information about the spell in general</param>
+    /// <param name="spell">Can be either Message_ServerResponse_CreateSpellInStaticPosition or Message_ServerResponse_CreateSpellWithDirection</param>
+    /// <returns></returns>
+    public ISpellController CreateSpell(UnitySpellDefinition unitySpellDefinition, object spell) 
+    {
+        if (spell.GetType() == typeof(Message_ServerResponse_CreateSpellInStaticPosition))
+            return staticSpellsFactory[((Message_ServerResponse_CreateSpellInStaticPosition)spell).request.spellType].CreateSpellController((Message_ServerResponse_CreateSpellInStaticPosition)spell, unitySpellDefinition);
+        else //Message_ServerResponse_CreateSpellInStaticPosition
+            return directionSpellsFactory[((Message_ServerResponse_CreateSpellWithDirection)spell).request.spellType].CreateSpellController((Message_ServerResponse_CreateSpellWithDirection)spell, unitySpellDefinition);
     }
 }

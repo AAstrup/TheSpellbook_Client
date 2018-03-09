@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
-/// Data that keps being stored in unity
+/// Data that keeps being stored in unity
 /// </summary>
 public class PersistentDataContainer : MonoBehaviour
 {
+    public PersistentData persistentData;
+    public DBProfile_Login profile;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -13,6 +17,14 @@ public class PersistentDataContainer : MonoBehaviour
     {
         persistentData = new PersistentData();
     }
-    public PersistentData persistentData;
 
+    public void SetProfile(Message_ServerResponse_Login objData)
+    {
+        profile = objData.profile;
+    }
+
+    public void SetProfile(Message_ServerResponse_Register objData)
+    {
+        profile = objData.profile;
+    }
 }

@@ -1,39 +1,61 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 internal class Match_GUIHandler
 {
+    private string newLine;
     public static Match_GUIHandler Instance;
-    public GameObject WonPanel;
-    public GameObject LostPanel;
+    public GameObject ResultsPanel;
+    public Text ResultsHeaderText;
+    public Text ResultsContentText;
+    public GameObject LoadingPanel;
+    public GameObject RoundStartPanel;
+    public Text RoundStartText;
 
     public Match_GUIHandler()
     {
+        newLine = Environment.NewLine + Environment.NewLine;
         Instance = this;
-        WonPanel = GameObject.Find("WonPanel");
-        LostPanel = GameObject.Find("LostPanel");
+        ResultsPanel = GameObject.Find("ResultsPanel");
+        ResultsHeaderText = GameObject.Find("ResultsHeaderText").GetComponent<Text>();
+        ResultsContentText = GameObject.Find("ResultsContentText").GetComponent<Text>();
+        LoadingPanel = GameObject.Find("LoadingPanel");
+        RoundStartPanel = GameObject.Find("RoundStartPanel");
+        RoundStartText = GameObject.Find("RoundStartText").GetComponent<Text>();
     }
 
-    internal void SetState_Default()
+    internal void SetState_Initial()
     {
         CloseAllWindows();
+        LoadingPanel.SetActive(true);
+    }
+
+    public void SetState_NewRound()
+    {
+        CloseAllWindows();
+        RoundStartPanel.SetActive(true);
     }
 
     void CloseAllWindows()
     {
-        WonPanel.SetActive(false);
-        LostPanel.SetActive(false);
+        ResultsPanel.SetActive(false);
+        LoadingPanel.SetActive(false);
+        RoundStartPanel.SetActive(false);
     }
 
-    public void SetState_Win()
+    public void SetState_WinLoss(Message_Update_MatchFinished data)
     {
         CloseAllWindows();
-        WonPanel.SetActive(true);
+        ResultsPanel.SetActive(true);
+        ResultsHeaderText.text = data.won ? "You won" : "You lost";
+        var scores = InGameWrapper.instance.playersWrapper.GetOnlyLocalPlayer().playerScoreController;
+        string contentText = String.Concat("Rounds won ", data.playerScore.roundsWon, newLine, "Kills ", scores.GetKills(), newLine, "Deaths ", scores.GetDeaths());
+        ResultsContentText.text = contentText;
     }
 
-    public void SetState_Loss()
+    internal void SetState_InGame()
     {
         CloseAllWindows();
-        LostPanel.SetActive(true);
     }
 }

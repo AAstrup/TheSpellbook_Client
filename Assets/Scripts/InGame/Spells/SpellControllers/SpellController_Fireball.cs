@@ -4,13 +4,18 @@ using UnityEngine;
 
 internal class SpellController_Fireball : SpellControllers_HitDetection, ISpellController
 {
-    private Message_ServerResponse_CreateSpell spell;
+    private Message_ServerResponse_CreateSpellWithDirection spell;
     private Vector3 direction;
+    private UnitySpellDefinition unityDefinition;
 
-    public SpellController_Fireball(GameObject gmj, Message_ServerResponse_CreateSpell spell) : base(spell.request.spellType,gmj)
+    public SpellController_Fireball(Message_ServerResponse_CreateSpellWithDirection spell,UnitySpellDefinition definition) 
+        : base(spell.request.spellType, definition, new Vector3(spell.request.spellXPos, UnityStaticValues.StaticYPos, spell.request.playerZPos), spell.request.TimeStartedCasting,
+            new Vector3(spell.request.playerXPos, UnityStaticValues.StaticYPos,spell.request.playerZPos),spell.request.ownerGUID, spell.request.rank)
     {
         this.spell = spell;
-        direction = new Vector3(spell.request.xDir, 0f, spell.request.zDir);
+        direction = new Vector3(spell.request.spellXDir, 0f, spell.request.spellZDir);
+        unityDefinition = InGameWrapper.instance.spellsWrapper.spellData.GetSpellDefinition(SpellType.Fireball);
+        InGameWrapper.instance.playersWrapper.GetPlayerByOwnerGUID(spell.request.ownerGUID).spellCaster.CastSpell(this, spell.request.playerXPos, spell.request.playerZPos);
     }
 
     public bool IsDead()
@@ -20,17 +25,19 @@ internal class SpellController_Fireball : SpellControllers_HitDetection, ISpellC
 
     public void LocalUpdate(float deltaTime)
     {
-        gmj.transform.position += direction * deltaTime;
+        if (!base.FinishedCasting())
+            return;
+        projectile.transform.position += direction * deltaTime * unityDefinition.GetMoveSpeed(spell.request.rank);
         if (CheckForCollisions()) {
             Vector3 direction = CalCulateDirection(playerHit);
-            Hit(playerHit, direction,playerHit.GetGmj().transform.position);
+            Hit(playerHit, direction,playerHit.GetGmj().transform.position,true);
             SendCollisionsMessage(direction,playerHit.GetGmj().transform.position);
         }
     }
 
     private Vector3 CalCulateDirection(PlayerController playerHit)
     {
-        Vector3 direction = playerHit.GetGmj().transform.position - gmj.transform.position;
+        Vector3 direction = playerHit.GetGmj().transform.position - projectile.transform.position;
         direction = new Vector3(direction.x, 0f, direction.z);
         direction.Normalize();
         return direction;
@@ -41,7 +48,7 @@ internal class SpellController_Fireball : SpellControllers_HitDetection, ISpellC
         Message_ClientCommand_SpellHit msg = new Message_ClientCommand_SpellHit()
         {
             playerGMJHit = playerHit.GetID(),
-            spellHitGmjID = spell.spellGmjID,
+            spellHitGmjID = spell.spellID,
             hitDirectionX = hitDirection.x,
             hitDirectionZ = hitDirection.z,
             playerPosX = playerHitPos.x,
@@ -52,20 +59,34 @@ internal class SpellController_Fireball : SpellControllers_HitDetection, ISpellC
 
     public void OnlineUpdate(float deltaTime)
     {
-        gmj.transform.position += direction * deltaTime;
+        if (!FinishedCasting())
+            return;
+        projectile.transform.position += direction * deltaTime * unityDefinition.GetMoveSpeed(spell.request.rank);
     }
 
-    public void Hit(PlayerController playerHit, Vector3 hitDirection, Vector3 playerUpdatedPos)
+    public void Hit(PlayerController playerHit, Vector3 hitDirection, Vector3 playerUpdatedPos,bool isLocal)
     {
-        GameObject.Destroy(gmj);
         isDead = true;
-        playerHit.SetCurrentPos(playerUpdatedPos);
-        playerHit.ApplyPushBack(hitDirection * pushBackMultiplier * UnityStaticValues.PushBackMultiplier);
-        InGameWrapper.instance.spellsWrapper.DestroySpell(this,false);
+        if (isLocal)
+        {
+            playerHit.ApplyPushBack(hitDirection * pushBackMultiplier * UnityStaticValues.PushBackMultiplier);
+        }
+
+        var caster = InGameWrapper.instance.playersWrapper.GetPlayerByOwnerGUID(spell.request.ownerGUID);
+        playerHit.healthController.Damage(unityDefinition.upgrades[spell.request.rank].damage, caster.GetID());
+
+        GameObject effectGmj = GameObject.Instantiate(unityDefinition.hitEffectPrefab, projectile.transform.position, Quaternion.identity);
+        effectGmj.transform.rotation = Quaternion.LookRotation(hitDirection);
+        GameObject.Destroy(projectile);
     }
 
     public int GetGuid()
     {
-        return spell.spellGmjID;
+        return spell.spellID;
+    }
+
+    public double GetFinishCastTimeInMiliseconds()
+    {
+        return spell.request.TimeStartedCasting + unityDefinition.GetCastTimeInMiliSeconds(spell.request.rank);
     }
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine.SceneManagement;
+﻿using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 internal class MM_EventHandler : IMMEventHandler
 {
@@ -9,9 +11,21 @@ internal class MM_EventHandler : IMMEventHandler
         guiHandler = MM_GUIHandler.Instance;
     }
 
-    public void Connecting()
+    public void ConnectingAttempt(int connectionAttempts)
     {
-        guiHandler.SetUIState_Connecting();
+        Debug.Log("ConnectingAttempt " + connectionAttempts);
+        guiHandler.SetUIState_ConnectingAttempt(connectionAttempts);
+    }
+
+    public void ConnectingFailed()
+    {
+        Debug.Log("CONNECTIONFAILED");
+        guiHandler.SetUIState_MM();
+    }
+
+    public void ConnectingSuccesful()
+    {
+        //Handled when recieveing inqueue data
     }
 
     public void InQueue(Message_Response_InQueue data)
@@ -27,6 +41,12 @@ internal class MM_EventHandler : IMMEventHandler
     public void QueueReady(Counter counter)
     {
         guiHandler.SetUIState_QueueReady();
+        guiHandler.SetUISlider(counter);
+    }
+
+    public void StartedConnecting()
+    {
+        guiHandler.SetUIState_Connecting();
     }
 
     public void StartMenu()

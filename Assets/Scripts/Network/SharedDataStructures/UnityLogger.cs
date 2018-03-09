@@ -6,8 +6,17 @@ internal class UnityLogger : ILogger
     {
     }
 
+    public void DebugLog(string s)
+    {
+        //if (Application.isEditor)
+        //    Debug.Log("Logger - " + s);
+        //BUILDDEBUGTEXT.instance.Log(s);
+    }
+
     public void Log(string s)
     {
-        Debug.Log("Logger - " + s);
+        //if (Application.isEditor)   
+        //    Debug.Log("Logger - " + s);
+        //BUILDDEBUGTEXT.instance.Log(s);
     }
 }

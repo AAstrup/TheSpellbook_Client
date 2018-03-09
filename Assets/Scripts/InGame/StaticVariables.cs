@@ -4,6 +4,6 @@ internal class StaticVariables
 {
     internal static float GetYPos()
     {
-        return 0f;
+        return 0.5f;
     }
 }

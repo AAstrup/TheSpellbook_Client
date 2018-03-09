@@ -10,4 +10,8 @@ public class UnityData
     public UnityCarData unityCarData;
     public UnityMapData mapData;
     public UnitySpellData spellData;
+    public UnityCursorData cursorData;
+    public UnityCurrencyData currencyWrapper;
+    public UnityAimData aimData;
+    public UnityDeviceInputData unityDeviceInputData;
 }

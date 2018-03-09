@@ -1,8 +1,8 @@
 ﻿using ClientServerSharedGameObjectMessages;
 using UnityEngine;
 
-internal interface ISpellFactory
+internal interface ISpellFactory_InStaticPosition
 {
     SpellType GetSpellTypeSupported();
-    ISpellController CreateSpellController(GameObject gmj, Message_ServerResponse_CreateSpell spell);
+    ISpellController CreateSpellController(Message_ServerResponse_CreateSpellInStaticPosition spell, UnitySpellDefinition definition);
 }

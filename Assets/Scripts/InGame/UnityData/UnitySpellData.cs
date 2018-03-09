@@ -5,10 +5,10 @@ using UnityEngine;
 [Serializable]
 public class UnitySpellData : MonoBehaviour
 {
-    public UnitySpellDefinition[] spells;
+    public UnitySpellDefinition[] spellDefinitions;
     public UnitySpellDefinition GetSpellDefinition(SpellType type)
     {
-        foreach (var item in spells)
+        foreach (var item in spellDefinitions)
         {
             if (item.type == type)
                 return item;
